@@ -1,5 +1,6 @@
 import java.util.Iterator;
 
+@SuppressWarnings("unused")
 public class Iterations {
 
 	public static void main(String[] args) {

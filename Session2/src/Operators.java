@@ -31,7 +31,7 @@ public class Operators {
 		
 //		3. Increment and Decrement
 //			++ , --
-		hashCode++; // increment value by 1 | Postfix
+		hashCode++; // increment value by 1 | Post-  fix
 		++hashCode; // increment value by 1 | Prefix
 		++hashCode;
 		
@@ -89,8 +89,9 @@ public class Operators {
 		int num5 = num3 << 2;		// 1 0 0 0 _ _ -> 1 0 0 0 0 0 | multiple number by 2 power shift
 		System.out.println("num5 is: "+num5);
 		
-//		Misc Operators
+//		Miscellaneous Operators
 		
+		@SuppressWarnings("unused")
 		int tResult = (-10 > 2) ? 1 : 0;
 		System.out.println("tResult is: "+tResult);
 	}

@@ -1,6 +1,7 @@
 
 public class ArraySyntaxes {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		
 //		Implicit Syntax:

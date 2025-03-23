@@ -2,6 +2,7 @@
 // Primitive types are the ones which works on Values. They store values i.e. Data directly
 public class SingleValueContainers {
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 //		Integral
@@ -35,7 +36,7 @@ public class SingleValueContainers {
 		isInternetOn = false;
 		
 //		Characters
-//		16 bits in memory | ASCII and UNICODES
+//		16 bits in memory | ASCII (http://www.asciitable.com/ and UNICODES (https://unicode-table.com/en/#0905)
 //		char ch = 'A';
 //		char ch = 65;
 		char ch = '\u0905';

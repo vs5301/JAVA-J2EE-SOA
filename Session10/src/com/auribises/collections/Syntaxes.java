@@ -16,7 +16,7 @@ public class Syntaxes {
 		Vector vector = new Vector();
 		Stack stack = new Stack(); // For you to explore | LIFO
 				
-//		Polymorhic Statements
+//		Polymorphic Statements
 		List ref = new LinkedList();
 		ref = new ArrayList();
 		ref = new Vector();
