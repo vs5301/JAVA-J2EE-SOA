@@ -1,5 +1,6 @@
 package com.auribises.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -16,6 +17,8 @@ public class DB {
 	Connection connection;
 	Statement statement;
 	PreparedStatement preparedStatement;
+	
+	CallableStatement callableStatement;
 	
 //	1. Load the driver
 	public DB() {
@@ -75,7 +78,7 @@ public class DB {
 			preparedStatement.setString(5, customer.entryDateTime);
 			preparedStatement.setString(6, customer.exitDateTime);
 			
-			int i = preparedStatement.executeUpdate(sql); // executeUpdate -> will perform SQL insert, update and delete commands
+			int i = preparedStatement.executeUpdate(); // executeUpdate -> will perform SQL insert, update and delete commands
 			
 			if (i>0) {
 				resultMessage = "4. "+customer.name+" added in database";
@@ -88,6 +91,53 @@ public class DB {
 		}
 		
 		return resultMessage;
+	}
+	
+	public void executeProcedureInDB(Customer customer) { 	
+		try {
+			String sql = "{ call addCustomer(null, ?, ?, ?, ?, ?, ?) }";
+			
+			callableStatement = connection.prepareCall(sql);
+			callableStatement.setString(1, customer.name);
+			callableStatement.setString(2, customer.phone);
+			callableStatement.setString(3, customer.email);
+			callableStatement.setFloat(4, (float) customer.temperature);
+			callableStatement.setString(5, customer.entryDateTime);
+			callableStatement.setString(6, customer.exitDateTime);
+			
+			callableStatement.execute();
+			System.out.println("Procedure executed");
+			
+		} catch (Exception e) {
+			System.out.println("Procedure failed: "+e);
+		}
+	}
+	
+	public void executeBatchTransaction() { 
+		
+		try {
+			String sql1 = "UPDATE Customer SET Name='Fionna Flynn', email='fionna.flynn@example.com' where id=2";
+			String sql2 = "DELETE FROM Customer WHERE cid=8";
+			
+			statement = connection.createStatement();
+			connection.setAutoCommit(false);
+			statement.addBatch(sql1);
+			statement.addBatch(sql2);
+			
+			statement.executeBatch();
+			connection.commit();
+			
+			System.out.println("Batch Executed");
+			
+		} catch (Exception e) {
+			System.out.println("Batch Commit failed: "+e);
+			try {
+				System.out.println("Error occurred and transaction rolledback");
+				connection.rollback();
+			} catch (Exception e2) {
+				System.out.println("Rollback failed: "+e);
+			}
+		}
 	}
 	
 	public String markExit(String exitDateTime, int customerId) {
