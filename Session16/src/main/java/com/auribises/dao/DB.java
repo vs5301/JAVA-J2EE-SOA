@@ -3,6 +3,7 @@ package com.auribises.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import com.auribises.model.User;
 
@@ -67,6 +68,31 @@ public class DB {
 		}
 		
 		return message;
+	}
+	
+	public boolean loginUser(User user) {
+		
+		boolean loginStatus = false;
+		
+		try {
+			String sql = "select * from User where email = ? and password = ?";
+			
+			prepStmt = connection.prepareStatement(sql);
+			prepStmt.setString(1, user.email);
+			prepStmt.setString(2, user.password);
+			
+			ResultSet rs = prepStmt.executeQuery();
+			loginStatus = rs.next();
+			
+			if(loginStatus) {
+				user.name = rs.getString(2);
+			}
+			
+		} catch (Exception e) {
+			System.out.println("Some Exception: "+e);
+		}
+		
+		return loginStatus;
 	}
 	
 	// 4. Close Connection with DataBase
