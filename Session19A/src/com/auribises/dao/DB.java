@@ -1,11 +1,18 @@
 package com.auribises.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.criteria.HibernateCriteriaBuilder;
+import org.hibernate.query.criteria.JpaCriteriaQuery;
+import org.hibernate.query.criteria.JpaRoot;
+
+import com.auribises.model.Restaurant;
 
 /*
  * Hibernate APIs
@@ -45,6 +52,46 @@ public class DB {
 		session.persist(object);
 		transaction.commit();
 		System.out.println("Object saved");
+	}
+	
+	public void fetchAllObjects() {
+		//String hql = "From Restaurant";
+		//String hql = "From Restaurant where ratings > 4.8";
+		
+		//List<Restaurant> restaurants = session.createQuery(hql).list();
+		
+		// Explore new API against createCriteria here :)
+		HibernateCriteriaBuilder builder = session.getCriteriaBuilder();
+		JpaCriteriaQuery<Restaurant> query = builder.createQuery(Restaurant.class);
+		JpaRoot<Restaurant> root = query.from(Restaurant.class);
+
+		query.where(builder.gt(root.get("ratings"), 4.8));
+
+		List<Restaurant> restaurants = session.createQuery(query).getResultList();
+		
+		// Iterate in List of Restaurants
+		restaurants.forEach((restaurant) -> restaurant.showRestaurant());
+		
+	}
+	
+	public void fetchSingleObject(Integer id) {
+		Restaurant restaurant = session.get(Restaurant.class, id);
+		System.out.println(restaurant);
+		restaurant.showRestaurant();
+	}
+	
+	public void updateObject(Restaurant object) {
+		transaction.begin();
+		session.merge(object);
+		transaction.commit();
+		System.out.println("Object Updated in DataBase");
+	}
+	
+	public void deleteObject(Restaurant object) {
+		transaction.begin();
+		session.remove(object);
+		transaction.commit();
+		System.out.println("Object Deleted From DataBase");
 	}
 	
 	public void close() {

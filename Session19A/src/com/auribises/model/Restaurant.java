@@ -105,6 +105,15 @@ public class Restaurant {
 	public void setOperatingHours(String operatingHours) {
 		this.operatingHours = operatingHours;
 	}
+	
+	public void showRestaurant() {
+		System.out.println("------------["+rid+"]-------------");
+		System.out.println(name+" | "+phone);
+		System.out.println(type+" | "+ratings);
+		System.out.println(operatingHours);
+		System.out.println(address);
+		System.out.println("----------------------------------");
+	}
 
 	@Override
 	public String toString() {
